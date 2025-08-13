@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: futvia-api
+
+  profiles:
+    active: dev  # en local
+
+server:
+  port: 8080
+
+# Swagger UI en /swagger-ui.html (springdoc lo expone)
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+---
+# Perfil DEV (local con Docker MySQL)
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/futvia?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: futvia
+    password: futvia
+  jpa:
+    hibernate:
+      ddl-auto: update   # SOLO en dev
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+# Seguridad (ajustes simples iniciales)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+---
+# Perfil PROD (RDS en AWS) — ajustar valores reales al desplegar
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://<TU-ENDPOINT-RDS>:3306/futvia?useSSL=true&serverTimezone=UTC
+    username: <USUARIO_RDS>
+    password: <PASSWORD_RDS>
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # en prod valida contra el esquema
+    open-in-view: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+
+# Variables S3 (multimedia) que usarás luego
+app:
+  s3:
+    bucket: <tu-bucket>
+    region: <tu-region>

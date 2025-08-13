@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_futvia
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: futvia
+      MYSQL_USER: futvia
+      MYSQL_PASSWORD: futvia
+    ports:
+      - "3306:3306"
+    volumes:
+      - futvia_mysql_data:/var/lib/mysql
+    command: ["--default-authentication-plugin=caching_sha2_password"]
+volumes:
+  futvia_mysql_data:
