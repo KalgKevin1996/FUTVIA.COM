@@ -1,0 +1,10 @@
+package com.futvia.dto.rbac;
+import com.futvia.dto.common.BaseDTO;
+import com.futvia.model.common.enums.AmbitoTipo;
+import lombok.*;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+class PermisoFormDTO {
+    private String codigo;
+    private String descripcion;
+}
