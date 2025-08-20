@@ -1,14 +1,15 @@
+// src/main/java/com/futvia/service/club/EquipoService.java
 package com.futvia.service.club;
 
-import com.futvia.dto.club.*;
-import org.springframework.data.domain.*;
+import com.futvia.dto.club.EquipoDTO;
+import com.futvia.dto.club.EquipoFormDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface EquipoService {
-    Page<EquipoDTO> listar(Pageable p);
-    Page<EquipoDTO> porClub(Long clubId, Pageable p);
-    Page<EquipoDTO> porCompeticion(Long competicionId, Pageable p);
-    Page<EquipoDTO> porCategoria(Long categoriaId, Pageable p);
-    EquipoDTO crear(EquipoFormDTO f);
-    EquipoDTO editar(Long id, EquipoFormDTO f);
+    Page<EquipoDTO> listar(Long competicionId, Long categoriaId, Pageable pageable);
+    EquipoDTO obtener(Long id);
+    EquipoDTO crear(EquipoFormDTO form);
+    EquipoDTO editar(Long id, EquipoFormDTO form);
     void eliminar(Long id);
 }

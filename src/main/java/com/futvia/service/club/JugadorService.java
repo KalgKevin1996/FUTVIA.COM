@@ -1,12 +1,15 @@
+// src/main/java/com/futvia/service/club/JugadorService.java
 package com.futvia.service.club;
 
-import com.futvia.dto.club.*;
-import org.springframework.data.domain.*;
+import com.futvia.dto.club.JugadorDTO;
+import com.futvia.dto.club.JugadorFormDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface JugadorService {
-    Page<JugadorDTO> listar(String q, Pageable p);
-    Page<JugadorDTO> porEquipoTemporada(Long equipoId, Long temporadaId, Pageable p);
-    JugadorDTO crear(JugadorFormDTO f);
-    JugadorDTO editar(Long id, JugadorFormDTO f);
+    Page<JugadorDTO> buscar(String q, Pageable pageable); // por nombre/apellido
+    JugadorDTO obtener(Long id);
+    JugadorDTO crear(JugadorFormDTO form);
+    JugadorDTO editar(Long id, JugadorFormDTO form);
     void eliminar(Long id);
 }

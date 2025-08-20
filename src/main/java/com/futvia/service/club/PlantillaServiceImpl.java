@@ -1,40 +1,62 @@
+// src/main/java/com/futvia/service/club/PlantillaServiceImpl.java
 package com.futvia.service.club;
 
-import com.futvia.dto.club.*;
+import com.futvia.dto.club.PlantillaDTO;
+import com.futvia.dto.club.PlantillaFormDTO;
+import com.futvia.mapper.RefMapper;
 import com.futvia.mapper.club.PlantillaMapper;
 import com.futvia.model.club.Plantilla;
 import com.futvia.repository.club.PlantillaRepository;
-import com.futvia.service.common.BusinessException;
 import com.futvia.service.common.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-@Service @RequiredArgsConstructor
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
 public class PlantillaServiceImpl implements PlantillaService {
-    private final PlantillaRepository repo; private final PlantillaMapper mapper;
+    private final PlantillaRepository repo;
+    private final PlantillaMapper mapper;
+    private final RefMapper ref; // para nombreCompleto en DTO
 
-    public Page<PlantillaDTO> porEquipo(Long equipoId, Long temporadaId, Pageable p){
-        return repo.findByEquipo_IdAndTemporada_Id(equipoId, temporadaId, p).map(mapper::toDto);
+    public Page<PlantillaDTO> listar(Long equipoId, Long temporadaId, Pageable pageable){
+        if (equipoId != null && temporadaId != null) {
+            List<Plantilla> list = repo.findByEquipo_IdAndTemporada_Id(equipoId, temporadaId);
+            var dtos = list.stream().map(e -> mapper.toDto(e, ref)).toList();
+            return new org.springframework.data.domain.PageImpl<>(dtos, pageable, dtos.size());
+        }
+        return repo.findAll(pageable).map(e -> mapper.toDto(e, ref));
     }
 
-    @Transactional public PlantillaDTO agregar(PlantillaFormDTO f){
-        boolean existe = repo.existsByEquipo_IdAndJugador_IdAndTemporada_Id(f.getEquipoId(), f.getJugadorId(), f.getTemporadaId());
-        if(existe) throw new BusinessException("El jugador ya está en la plantilla para esa temporada");
-        Plantilla e = mapper.toEntity(f);
-        return mapper.toDto(repo.save(e));
+    public PlantillaDTO obtener(Long id){
+        Plantilla e = repo.findById(id).orElseThrow(() -> new NotFoundException("Plantilla no encontrada: " + id));
+        return mapper.toDto(e, ref);
     }
 
-    @Transactional public PlantillaDTO editar(Long id, PlantillaFormDTO f){
-        Plantilla e = repo.findById(id).orElseThrow(() -> new NotFoundException("Plantilla no encontrada"));
-        mapper.update(e, f); return mapper.toDto(repo.save(e));
+    @Transactional
+    public PlantillaDTO agregar(PlantillaFormDTO form){
+        // (Regla de unicidad: equipo + jugador + temporada)
+        var posibles = repo.findByEquipo_IdAndTemporada_Id(form.getEquipoId(), form.getTemporadaId());
+        boolean yaExiste = posibles.stream().anyMatch(p -> p.getJugador().getId().equals(form.getJugadorId()));
+        if (yaExiste) throw new IllegalStateException("El jugador ya está en la plantilla de esa temporada.");
+        Plantilla e = mapper.toEntity(form);
+        return mapper.toDto(repo.save(e), ref);
     }
 
-    @Transactional public void activar(Long id, boolean activo){
-        Plantilla e = repo.findById(id).orElseThrow(() -> new NotFoundException("Plantilla no encontrada"));
-        e.setActivo(activo); repo.save(e);
+    @Transactional
+    public PlantillaDTO editar(Long id, PlantillaFormDTO form){
+        Plantilla e = repo.findById(id).orElseThrow(() -> new NotFoundException("Plantilla no encontrada: " + id));
+        mapper.update(e, form);
+        return mapper.toDto(repo.save(e), ref);
     }
 
-    @Transactional public void eliminar(Long id){ repo.deleteById(id); }
+    @Transactional
+    public void eliminar(Long id){
+        if (!repo.existsById(id)) throw new NotFoundException("Plantilla no encontrada: " + id);
+        repo.deleteById(id);
+    }
 }
