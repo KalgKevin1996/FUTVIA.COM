@@ -6,7 +6,7 @@ import lombok.*;
 
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class RolFormDTO {
+public class RolFormDTO {
     private RolNombre nombre;
     private Integer nivel;
 }

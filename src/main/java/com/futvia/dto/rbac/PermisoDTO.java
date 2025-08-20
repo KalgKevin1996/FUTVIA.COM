@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class PermisoDTO {
+public class PermisoDTO {
     private String codigo;
     private String descripcion;
 }

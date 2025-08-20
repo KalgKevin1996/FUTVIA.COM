@@ -4,7 +4,7 @@ import com.futvia.model.common.enums.AmbitoTipo;
 import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class PermisoFormDTO {
+public class PermisoFormDTO {
     private String codigo;
     private String descripcion;
 }

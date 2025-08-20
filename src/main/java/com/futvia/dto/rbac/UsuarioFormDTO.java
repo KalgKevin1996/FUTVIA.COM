@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class UsuarioFormDTO {
+public class UsuarioFormDTO {
     private String nombre;
     private String apellido;
     private String email;

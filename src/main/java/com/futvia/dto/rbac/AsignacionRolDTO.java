@@ -5,7 +5,7 @@ import com.futvia.model.common.enums.AmbitoTipo;
 import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class AsignacionRolDTO {
+public class AsignacionRolDTO {
     private Long usuarioId;
     private Long rolId;
     private AmbitoTipo ambitoTipo;

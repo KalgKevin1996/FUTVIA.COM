@@ -5,7 +5,7 @@ import lombok.*;
 
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class AsignacionRolFormDTO {
+public class AsignacionRolFormDTO {
     private Long usuarioId;
     private Long rolId;
     private AmbitoTipo ambitoTipo;
