@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class ArchivoFormDTO {
     private ArchivoTipo tipo;
     private String s3Key;
