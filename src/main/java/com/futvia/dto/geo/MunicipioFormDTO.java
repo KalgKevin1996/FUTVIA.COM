@@ -4,4 +4,4 @@ import com.futvia.dto.common.BaseDTO;
 import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class MunicipioFormDTO { private Long departamentoId; private String nombre; }
+public class MunicipioFormDTO { private Long departamentoId; private String nombre; }
