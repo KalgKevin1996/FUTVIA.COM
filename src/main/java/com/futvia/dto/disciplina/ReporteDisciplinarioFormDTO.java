@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class ReporteDisciplinarioFormDTO {
     private Long partidoId;
     private Long reportanteId;

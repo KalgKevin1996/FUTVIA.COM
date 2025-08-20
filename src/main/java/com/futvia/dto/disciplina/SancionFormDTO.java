@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class SancionFormDTO {
     private Long jugadorId;
     private Long equipoId;
