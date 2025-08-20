@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class PlantillaFormDTO {
     private Long equipoId;
     private Long jugadorId;

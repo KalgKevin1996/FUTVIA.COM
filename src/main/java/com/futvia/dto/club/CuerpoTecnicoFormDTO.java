@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class CuerpoTecnicoFormDTO {
     private Long equipoId;
     private com.futvia.model.common.enums.RolTecnico rolTecnico;
