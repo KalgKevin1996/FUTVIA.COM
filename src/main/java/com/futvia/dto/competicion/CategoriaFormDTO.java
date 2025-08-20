@@ -8,4 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class CategoriaFormDTO { private Long competicionId; private String nombre; }

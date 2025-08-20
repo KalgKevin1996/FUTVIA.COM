@@ -5,6 +5,7 @@ import com.futvia.model.common.enums.TipoCompeticion;
 import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public
 class CompeticionFormDTO {
     private String nombre;
     private TipoCompeticion tipo;

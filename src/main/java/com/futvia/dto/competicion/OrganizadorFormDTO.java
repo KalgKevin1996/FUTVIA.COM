@@ -6,4 +6,4 @@ import lombok.*;
 
 // Forms
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-class OrganizadorFormDTO { private String nombre; private String tipo; }
+public class OrganizadorFormDTO { private String nombre; private String tipo; }
