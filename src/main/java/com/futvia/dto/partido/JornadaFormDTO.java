@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class JornadaFormDTO {
     private Long temporadaId; private Long categoriaId;
     private Integer numero; private java.time.LocalDate fechaInicio;
