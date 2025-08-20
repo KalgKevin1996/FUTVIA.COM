@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+public
 class EstadisticaEquipoPartidoFormDTO {
     private Long partidoId; private Long equipoId;
     private Integer posesion; private Integer tiros; private Integer tirosArco;
