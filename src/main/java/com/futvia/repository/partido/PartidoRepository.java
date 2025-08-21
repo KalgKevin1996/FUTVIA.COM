@@ -1,4 +1,4 @@
-package com.futvia.repository.geo.partido;
+package com.futvia.repository.partido;
 
 import com.futvia.model.partido.*;
 import com.futvia.model.common.enums.EstadoPartido;
