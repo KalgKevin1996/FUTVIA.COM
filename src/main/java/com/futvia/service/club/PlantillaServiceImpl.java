@@ -1,5 +1,5 @@
 // src/main/java/com/futvia/service/club/PlantillaServiceImpl.java
-package com.futvia.model.club.club;
+package com.futvia.service.club;
 
 import com.futvia.dto.club.PlantillaDTO;
 import com.futvia.dto.club.PlantillaFormDTO;
