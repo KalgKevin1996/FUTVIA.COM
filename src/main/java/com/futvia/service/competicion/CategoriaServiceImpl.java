@@ -1,47 +1,57 @@
+// src/main/java/com/futvia/service/competicion/CategoriaServiceImpl.java
 package com.futvia.service.competicion;
 
-import com.futvia.dto.competicion.*;
+import com.futvia.dto.competicion.CategoriaDTO;
+import com.futvia.dto.competicion.CategoriaFormDTO;
 import com.futvia.mapper.competicion.CategoriaMapper;
 import com.futvia.model.competicion.Categoria;
 import com.futvia.repository.competicion.CategoriaRepository;
+import com.futvia.service.common.BusinessException;
 import com.futvia.service.common.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor
 public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaRepository repo;
     private final CategoriaMapper mapper;
 
-    @Override
-    public Page<CategoriaDTO> listar(Pageable p) {
-        return repo.findAll(p).map(mapper::toDto);
+    public Page<CategoriaDTO> listar(Long competicionId, String q, Pageable pageable){
+        if (competicionId != null && q != null && !q.isBlank())
+            return repo.findByCompeticion_IdAndNombreContainingIgnoreCase(competicionId, q, pageable).map(mapper::toDto);
+        if (competicionId != null) return repo.findByCompeticion_Id(competicionId, pageable).map(mapper::toDto);
+        return repo.findAll(pageable).map(mapper::toDto);
     }
 
-    @Override
-    public Page<CategoriaDTO> porCompeticion(Long competicionId, Pageable p) {
-        var list = repo.findByCompeticion_Id(competicionId)
-                .stream().map(mapper::toDto).collect(Collectors.toList());
-        return new PageImpl<>(list, p, list.size());
+    public CategoriaDTO obtener(Long id){
+        Categoria e = repo.findById(id).orElseThrow(() -> new NotFoundException("Categoría no encontrada: " + id));
+        return mapper.toDto(e);
     }
 
-    @Override @Transactional
-    public CategoriaDTO crear(CategoriaFormDTO f) {
-        Categoria e = mapper.toEntity(f);
+    @Transactional
+    public CategoriaDTO crear(CategoriaFormDTO form){
+        if (repo.existsByCompeticion_IdAndNombreIgnoreCase(form.getCompeticionId(), form.getNombre()))
+            throw new BusinessException("Ya existe una categoría con ese nombre en esta competición.");
+        return mapper.toDto(repo.save(mapper.toEntity(form)));
+    }
+
+    @Transactional
+    public CategoriaDTO editar(Long id, CategoriaFormDTO form){
+        Categoria e = repo.findById(id).orElseThrow(() -> new NotFoundException("Categoría no encontrada: " + id));
+        boolean cambiaClave = !e.getNombre().equalsIgnoreCase(form.getNombre()) ||
+                !e.getCompeticion().getId().equals(form.getCompeticionId());
+        if (cambiaClave && repo.existsByCompeticion_IdAndNombreIgnoreCase(form.getCompeticionId(), form.getNombre()))
+            throw new BusinessException("Ya existe una categoría con ese nombre en esta competición.");
+        mapper.update(e, form);
         return mapper.toDto(repo.save(e));
     }
 
-    @Override @Transactional
-    public CategoriaDTO editar(Long id, CategoriaFormDTO f) {
-        Categoria e = repo.findById(id).orElseThrow(() -> new NotFoundException("Categoría no encontrada"));
-        mapper.update(e, f);
-        return mapper.toDto(repo.save(e));
+    @Transactional
+    public void eliminar(Long id){
+        if (!repo.existsById(id)) throw new NotFoundException("Categoría no encontrada: " + id);
+        repo.deleteById(id);
     }
-
-    @Override @Transactional
-    public void eliminar(Long id) { repo.deleteById(id); }
 }
