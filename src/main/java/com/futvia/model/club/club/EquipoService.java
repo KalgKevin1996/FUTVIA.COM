@@ -1,5 +1,5 @@
 // src/main/java/com/futvia/service/club/EquipoService.java
-package com.futvia.service.club;
+package com.futvia.model.club.club;
 
 import com.futvia.dto.club.EquipoDTO;
 import com.futvia.dto.club.EquipoFormDTO;

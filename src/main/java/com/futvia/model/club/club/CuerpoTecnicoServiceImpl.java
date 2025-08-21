@@ -1,10 +1,9 @@
 // src/main/java/com/futvia/service/club/CuerpoTecnicoServiceImpl.java
-package com.futvia.service.club;
+package com.futvia.model.club.club;
 
 import com.futvia.dto.club.CuerpoTecnicoDTO;
 import com.futvia.dto.club.CuerpoTecnicoFormDTO;
 import com.futvia.mapper.club.CuerpoTecnicoMapper;
-import com.futvia.model.club.CuerpoTecnico;
 import com.futvia.repository.club.CuerpoTecnicoRepository;
 import com.futvia.service.common.NotFoundException;
 import jakarta.transaction.Transactional;
