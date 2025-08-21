@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ActaPartidoRepository extends JpaRepository<ActaPartido, Long> {
 
-    // Recuperar acta por partido (un partido debería tener solo un acta)
+    // Un partido debería tener a lo sumo un acta
     Optional<ActaPartido> findByPartido_Id(Long partidoId);
 
-    // Listar actas relacionadas a un archivo específico
+    // Actas asociadas a un archivo (p.ej., para auditoría/limpieza)
     List<ActaPartido> findByArchivo_Id(Long archivoId);
 }
