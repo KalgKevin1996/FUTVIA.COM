@@ -15,6 +15,20 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+# JWT (valores comunes; puedes sobreescribir con variables de entorno)
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:cambia-esto-por-una-clave-larga-y-segura}   # >= 32 bytes (HS256)
+      expiration-minutes: ${JWT_EXP_MIN:120}
+
+# Seguridad (ajustes simples iniciales)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
 ---
 # Perfil DEV (local con Docker MySQL)
 spring:
@@ -34,12 +48,12 @@ spring:
     properties:
       hibernate.format_sql: true
 
-# Seguridad (ajustes simples iniciales)
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+# (Opcional) Si quieres un secreto distinto solo para dev, descomenta y ajusta:
+# app:
+#   security:
+#     jwt:
+#       secret: ${JWT_SECRET_DEV:cambia-esto-solo-para-dev}
+#       expiration-minutes: ${JWT_EXP_MIN_DEV:120}
 
 ---
 # Perfil PROD (RDS en AWS) — ajustar valores reales al desplegar
