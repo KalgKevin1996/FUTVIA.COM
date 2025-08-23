@@ -1,4 +1,3 @@
-// src/main/java/com/futvia/repository/rbac/UsuarioRepository.java
 package com.futvia.repository.rbac;
 
 import com.futvia.model.rbac.Usuario;
@@ -16,13 +15,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmailIgnoreCase(String email);
 
     // Filtros frecuentes
-    Page<Usuario> findByEstado(boolean estado, Pageable pageable);                 // activo/inactivo (campo estado) :contentReference[oaicite:5]{index=5}
+    Page<Usuario> findByEstado(boolean estado, Pageable pageable);
     Page<Usuario> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(
             String nombre, String apellido, Pageable pageable);
 
-    // Búsquedas masivas (para importaciones/operaciones por lotes)
+    // Búsquedas masivas
     List<Usuario> findByEmailIn(Collection<String> emails);
 
     // Mantenimiento
-    long deleteByEstadoFalse(); // eliminar inactivos en limpieza controlada
+    long deleteByEstadoFalse();
 }
